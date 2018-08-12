@@ -1,0 +1,53 @@
+version: '2.3'
+
+services:
+  proxy:
+    image: thommeo/nginx-proxy-access-log
+    container_name: proxy-nginx
+    ports:
+      - 80:${EXPOSED_PORT:-80}
+    volumes:
+      - proxy-conf:/etc/nginx/conf.d
+      - proxy-logs:/var/log/proxy
+    environment:
+      - SET_REAL_IP_FROM=${SET_REAL_IP_FROM}
+    networks:
+      - nginx-proxy
+    restart: always
+
+  docker-gen:
+    image: jwilder/docker-gen
+    command: -notify-sighup proxy-nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    volumes:
+      - proxy-conf:/etc/nginx/conf.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker-gen/proxy.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+    networks:
+      - nginx-proxy
+    restart: always
+
+  fail2ban:
+    image: thommeo/fail2ban-auth-nginx
+    privileged: true
+    network_mode: host
+    volumes:
+      - proxy-logs:/var/log/nginx
+    environment:
+      - EXPOSED_PORT=${EXPOSED_PORT:-80}
+      - FILTER_X_FORWARDED_FOR=${SET_REAL_IP_FROM}
+    restart: always
+
+  logrotate:
+    image: thommeo/logrotate
+    volumes:
+      - proxy-logs:/var/log/rotate
+    restart: always
+
+volumes:
+  proxy-conf:
+  proxy-logs:
+
+networks:
+  nginx-proxy:
+    external:
+      name: nginx-proxy

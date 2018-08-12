@@ -1,0 +1,3 @@
+[template]
+src = "override.conf.tmpl"
+dest = "/etc/nginx/conf.d/override.conf"
