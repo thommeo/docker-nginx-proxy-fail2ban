@@ -1,6 +1,6 @@
 # docker-nginx-proxy-fail2ban
 
-Setup provides nginx proxy container featuring automatic virtual hosts creation and blocking with fail2ban.
+Docker nginx proxy container featuring automatic virtual hosts creation and blocking unauthorized clients with fail2ban.
 
 nginx proxy container creates access logs on filesystem. Set environment variable `SET_REAL_IP_FROM=<IP>` on the container to use `X-Forwarded-For` header sent by a trusted proxy with specified IP address.
 
