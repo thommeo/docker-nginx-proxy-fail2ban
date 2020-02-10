@@ -22,6 +22,9 @@ COPY rootfs/ /
 # Set to any non-empty value to make iptables drop packets containing 'X-Forwarded-For: <BANNED_IP>'
 ENV FILTER_X_FORWARDED_FOR=
 
+# Max number of retries allowed for authentication before host is banned
+ENV AUTH_MAX_RETRY=5
+
 # Specify comma separated list of ports on the host that you want the ban to affect
 ENV PORTS=
 

@@ -3,4 +3,4 @@ enabled   = true
 filter    = web-auth
 logpath   = /var/log/nginx/access.log
 action    = docker-iptables-multiport[name=auth-fail]
-maxretry  = 5
+maxretry  = {{getenv "AUTH_MAX_RETRY" "5"}}
