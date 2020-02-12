@@ -13,8 +13,9 @@ RUN apk add --update --no-cache --virtual .confd-dependencies make go git musl-d
     apk del .confd-dependencies && \
     rm -rf /tmp/gopath
 
-# Set to reverse proxy IP address
+# Nginx settings
 ENV SET_REAL_IP_FROM=
+ENV CLIENT_MAX_BODY_SIZE=
 
 COPY rootfs/ /
 

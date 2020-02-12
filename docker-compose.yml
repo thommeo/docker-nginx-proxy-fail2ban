@@ -11,6 +11,7 @@ services:
       - proxy-logs:/var/log/proxy
     environment:
       - SET_REAL_IP_FROM=${SET_REAL_IP_FROM}
+      - CLIENT_MAX_BODY_SIZE=${CLIENT_MAX_BODY_SIZE:-}
     networks:
       - nginx-proxy
     restart: always
